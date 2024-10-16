@@ -5,34 +5,48 @@
  * @format
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   StyleSheet,
   useColorScheme,
-  Text
+  Text,
+  Button
 } from 'react-native';
 import {
   NavigationContainer,
 } from '@react-navigation/native';
+
+import YoutubePlayer from 'react-native-youtube-iframe';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {
   Colors
 } from 'react-native/Libraries/NewAppScreen';
 
 function HomeScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Home!</Text>
-    </View>
+
+  const [playing, setPlaying] = useState(false);
+  const togglePlaying = () => {
+    setPlaying((prev) => !prev);
+  }
+
+
+    return (
+      <View>
+        <YoutubePlayer
+          height={300}
+          play={playing}
+          videoId={'Nx9E6QK3-jI'}
+        />
+        <Button title={playing ? 'pause' : 'play'} onPress={togglePlaying} />
+      </View>
   );
 }
 
 function SettingsScreen() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings!</Text>
+      <Text>Settings</Text>
     </View>
   );
 }
