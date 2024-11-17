@@ -1,4 +1,4 @@
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {Button, StyleSheet, View} from 'react-native';
 
 function HomeScreen({navigation}) {
   return (
@@ -9,7 +9,6 @@ function HomeScreen({navigation}) {
           return navigation.navigate('Alarm form');
         }}
         color="black"
-        
       />
     </View>
   );

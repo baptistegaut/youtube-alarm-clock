@@ -1,23 +1,18 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
   View,
   Alert,
   TextInput,
-  Button,
-  Dimensions,
   useWindowDimensions,
   Pressable,
 } from 'react-native';
 import DatePicker from 'react-native-date-picker';
-import {Formik} from 'formik';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function EditAlarmScreen() {
-  const [email, setEmail] = useState('');
   const [date, setDate] = useState(new Date());
-  const [channels, setChannels] = useState('');
   const deviceWidth = useWindowDimensions().width;
 
   const storeAlarm = async value => {
@@ -30,22 +25,6 @@ function EditAlarmScreen() {
     }
   };
 
-  const getData = async () => {
-    try {
-      const value = await AsyncStorage.storeAlarm('value2');
-      if (value !== null) {
-        return value;
-      }
-    } catch (e) {
-      // error reading value
-    }
-  };
-
-  const getAllkeys = async () => {
-    const allkeys = await AsyncStorage.getAllKeys();
-    console.log(allkeys);
-  };
-
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Time</Text>
@@ -53,7 +32,6 @@ function EditAlarmScreen() {
       <Text> Chose your favorite channel </Text>
       <TextInput
         style={[styles.text_input, {width: deviceWidth - deviceWidth / 2}]}
-        onChangeText={setChannels}
       />
       <Pressable
         style={[
@@ -69,7 +47,6 @@ function EditAlarmScreen() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
