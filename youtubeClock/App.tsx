@@ -5,53 +5,25 @@
  * @format
  */
 
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
-  View,
   StyleSheet,
   useColorScheme,
+  Pressable,
   Text,
-  Button
+  TouchableOpacity,
+  View,
+  Alert,
+  Button,
 } from 'react-native';
-import {
-  NavigationContainer,
-} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-import YoutubePlayer from 'react-native-youtube-iframe';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {
-  Colors
-} from 'react-native/Libraries/NewAppScreen';
+import HomeScreen from './src/screens/AccueilScreen';
+import EditAlarmScreen from './src/screens/editAlarm';
 
-function HomeScreen() {
-
-  const [playing, setPlaying] = useState(false);
-  const togglePlaying = () => {
-    setPlaying((prev) => !prev);
-  }
-
-
-    return (
-      <View>
-        <YoutubePlayer
-          height={300}
-          play={playing}
-          videoId={'Nx9E6QK3-jI'}
-        />
-        <Button title={playing ? 'pause' : 'play'} onPress={togglePlaying} />
-      </View>
-  );
-}
-
-function SettingsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Settings</Text>
-    </View>
-  );
-}
-
-const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -62,19 +34,37 @@ function App(): React.JSX.Element {
 
   return (
     <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Settings" component={SettingsScreen} />
-        </Tab.Navigator>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={params => ({
+            title: 'Clock Radio',
+            headerTitleStyle: {
+              color: 'black',
+              fontWeight: 'bold',
+            },
+            headerTitleAlign: 'center',
+            headerTransparent: true,
+          })}
+        />
+        <Stack.Screen
+          name="Alarm form"
+          component={EditAlarmScreen}
+          options={{headerShown: false}}
+        />
+      </Stack.Navigator>
     </NavigationContainer>
-
   );
 }
 
 const styles = StyleSheet.create({
-container: {
-
-}
+  container: {
+    borderWidth: 1,
+  },
+  text: {
+    color: 'black',
+  },
 });
 
 export default App;
