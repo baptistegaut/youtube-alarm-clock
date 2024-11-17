@@ -3,7 +3,6 @@ import {
   StyleSheet,
   Text,
   View,
-  Alert,
   TextInput,
   useWindowDimensions,
   Pressable,
@@ -11,15 +10,25 @@ import {
 import DatePicker from 'react-native-date-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function EditAlarmScreen() {
-  const [date, setDate] = useState(new Date());
-  const deviceWidth = useWindowDimensions().width;
 
-  const storeAlarm = async value => {
-    const key = 'alarm/' + value;
-    console.log('VALUE DE LA KEY', key);
+export interface Alarm {
+  time: string;
+  channelId: string;
+}
+
+function EditAlarmScreen({navigation, route}) {
+
+  const { alarmList } = route.params;
+  const [date, setDate] = useState(new Date());
+  const [channelId, setChannelId] = useState('');
+  const deviceWidth = useWindowDimensions().width;
+  const ALARM_KEY = 'alarms';
+
+  const saveAlarm = async () => {
     try {
-      await AsyncStorage.setItem(key, value.toString());
+      const alarm = { time: date.getHours() + ':' + date.getMinutes(), channelId: channelId };
+      await AsyncStorage.setItem(ALARM_KEY, JSON.stringify([...alarmList, alarm]));
+      return navigation.navigate('Home');
     } catch (e) {
       console.error(e);
     }
@@ -29,8 +38,9 @@ function EditAlarmScreen() {
     <View style={styles.container}>
       <Text style={styles.text}>Time</Text>
       <DatePicker theme="dark" mode="time" date={date} onDateChange={setDate} />
-      <Text> Chose your favorite channel </Text>
+      <Text style={styles.text}>Youtube channel </Text>
       <TextInput
+        value={channelId} onChangeText={setChannelId}
         style={[styles.text_input, {width: deviceWidth - deviceWidth / 2}]}
       />
       <Pressable
@@ -38,11 +48,18 @@ function EditAlarmScreen() {
           styles.pressable_style,
           {width: deviceWidth - deviceWidth / 1.5},
         ]}
-        onPress={async () => {
-          await storeAlarm(date.toString());
-          Alert.alert(`You add the alarm ${date.toString()}`);
+        onPress={saveAlarm}>
+        <Text style={styles.pressable_text}> Add alarm </Text>
+      </Pressable>
+      <Pressable
+        style={[
+          styles.pressable_style,
+          {width: deviceWidth - deviceWidth / 1.5},
+        ]}
+        onPress={() => {
+          return navigation.navigate('Home');
         }}>
-        <Text style={styles.pressable_text}> Add </Text>
+        <Text style={styles.pressable_text}> Cancel </Text>
       </Pressable>
     </View>
   );
@@ -64,6 +81,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 20,
+    color: 'white',
   },
   pressable_text: {
     color: 'black',
@@ -71,7 +89,7 @@ const styles = StyleSheet.create({
   },
   pressable_style: {
     margin: 10,
-    backgroundColor: 'gray',
+    backgroundColor: 'white',
     alignItems: 'center',
     borderRadius: 15,
   },

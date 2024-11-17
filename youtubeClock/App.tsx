@@ -10,7 +10,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import HomeScreen from './src/screens/AccueilScreen';
 import EditAlarmScreen from './src/screens/editAlarm';
-
+import React from 'react';
 const Stack = createNativeStackNavigator();
 
 function App(): React.JSX.Element {
