@@ -9,7 +9,6 @@ import {Alarm} from './EditAlarm';
 function HomeScreen({navigation}) {
   const ALARM_KEY = 'alarms';
   const [alarmList, setAlarmList] = useState<Alarm[]>([]);
-
   const getStoredAlarms = async () => {
     try {
       const storedAlarms = await AsyncStorage.getItem(ALARM_KEY);

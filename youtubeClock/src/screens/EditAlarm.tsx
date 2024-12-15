@@ -13,15 +13,15 @@ export interface Alarm {
 function EditAlarmScreen({navigation, route}) {
   const {alarmList} = route.params;
   const [date, setDate] = useState(new Date());
-  const [channelId, setChannelId] = useState('');
   const ALARM_KEY = 'alarms';
   const [selectedWeekdays, setSelectedWeekdays] = useState<string[]>([]);
 
   const saveAlarm = async () => {
     try {
+      setTriggerNotif(date, selectedWeekdays);
       const alarm = {
         time: date.getHours() + ':' + date.getMinutes(),
-        channelId: channelId,
+        channelId: 'default',
         weekdays: selectedWeekdays,
       };
 
@@ -42,7 +42,12 @@ function EditAlarmScreen({navigation, route}) {
         setSelectedWeekdays={setSelectedWeekdays}
       />
       <Text style={styles.text}>Time</Text>
-      <DatePicker mode="time" date={date} onDateChange={setDate} />
+      <DatePicker
+        mode="time"
+        date={date}
+        onDateChange={setDate}
+        theme="light"
+      />
       <Text style={styles.text}>Youtube channel </Text>
       <TextInput
         value={channelId}
