@@ -5,13 +5,16 @@ import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
 import com.facebook.react.defaults.DefaultReactActivityDelegate
 
+import io.invertase.notifee.NotifeeApiModule;
+
+
 class MainActivity : ReactActivity() {
 
   /**
    * Returns the name of the main component registered from JavaScript. This is used to schedule
    * rendering of the component.
    */
-  override fun getMainComponentName(): String = "youtubeClock"
+  override fun getMainComponentName(): String = NotifeeApiModule.getMainComponent("youtubeClock");
 
   /**
    * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]
