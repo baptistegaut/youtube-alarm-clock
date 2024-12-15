@@ -9,7 +9,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import HomeScreen from './src/screens/AccueilScreen';
-import EditAlarmScreen from './src/screens/editAlarm';
+import EditAlarmScreen from './src/screens/EditAlarm';
 import React from 'react';
 const Stack = createNativeStackNavigator();
 

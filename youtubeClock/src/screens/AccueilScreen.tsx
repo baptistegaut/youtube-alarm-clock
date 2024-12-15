@@ -15,6 +15,7 @@ function HomeScreen({navigation}) {
       const storedAlarms = await AsyncStorage.getItem(ALARM_KEY);
       if (storedAlarms !== null) {
         setAlarmList(JSON.parse(storedAlarms));
+        console.log('storedAlarms', storedAlarms);
       }
     } catch (e) {
       console.error(e);
@@ -45,7 +46,7 @@ function HomeScreen({navigation}) {
         onPress={() => deleteAlarm(index)}
         style={styles.deleteButton}
       >
-      <Icon name="delete" size={24} color="red" />
+      <Icon name="delete" size={24} color="#990000" />
     </Pressable>
     </View>
   );
@@ -63,14 +64,14 @@ function HomeScreen({navigation}) {
           return navigation.navigate('Alarm form', {alarmList: alarmList});
         }}
         style={styles.pressable_style}
-      ><Text style={styles.pressable_text}>Add alarm</Text></Pressable>
+      ><Text style={styles.pressable_text}>Add Alarm</Text></Pressable>
       <Pressable
         onPress={async () => {
         await AsyncStorage.removeItem(ALARM_KEY);
         setAlarmList([]);
         }}
         style={styles.pressable_style}
-      ><Text style={styles.pressable_text}>Clear all</Text></Pressable>
+      ><Text style={styles.pressable_text}>Clear All</Text></Pressable>
       </View>
     </View>
   );

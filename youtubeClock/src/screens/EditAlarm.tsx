@@ -7,6 +7,7 @@ import {
   useWindowDimensions,
   Pressable,
 } from 'react-native';
+import WeekdaySelector from '../component/WeekdaySelector';
 import DatePicker from 'react-native-date-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -23,6 +24,7 @@ function EditAlarmScreen({navigation, route}) {
   const [channelId, setChannelId] = useState('');
   const deviceWidth = useWindowDimensions().width;
   const ALARM_KEY = 'alarms';
+  const [selectedWeekdays, setSelectedWeekdays] = useState<string[]>([]); 
 
   const saveAlarm = async () => {
     try {
@@ -36,25 +38,24 @@ function EditAlarmScreen({navigation, route}) {
 
   return (
     <View style={styles.container}>
+      <WeekdaySelector selectedWeekdays={selectedWeekdays} setSelectedWeekdays={setSelectedWeekdays} />
       <Text style={styles.text}>Time</Text>
-      <DatePicker theme="dark" mode="time" date={date} onDateChange={setDate} />
+      <DatePicker  mode="time" date={date} onDateChange={setDate} />
       <Text style={styles.text}>Youtube channel </Text>
       <TextInput
         value={channelId} onChangeText={setChannelId}
-        style={[styles.text_input, {width: deviceWidth - deviceWidth / 2}]}
+        style={styles.text_input}
       />
       <Pressable
         style={[
           styles.pressable_style,
-          {width: deviceWidth - deviceWidth / 1.5},
         ]}
         onPress={saveAlarm}>
-        <Text style={styles.pressable_text}> Add alarm </Text>
+        <Text style={styles.pressable_text}> Save Alarm </Text>
       </Pressable>
       <Pressable
         style={[
           styles.pressable_style,
-          {width: deviceWidth - deviceWidth / 1.5},
         ]}
         onPress={() => {
           return navigation.navigate('Home');
@@ -69,10 +70,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'black',
+    backgroundColor: 'white',
   },
   text_input: {
     margin: 10,
+    width: '80%',
     paddingLeft: 20,
     borderWidth: 1,
     borderRadius: 100,
@@ -80,18 +82,21 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   text: {
-    fontSize: 20,
-    color: 'white',
+    fontSize: 18,
+    color: 'black',
   },
   pressable_text: {
-    color: 'black',
+    color: 'white',
     fontSize: 20,
+    textAlign: 'center',
   },
   pressable_style: {
     margin: 10,
-    backgroundColor: 'white',
+    padding: 5,
+    width: '50%',
+    backgroundColor: 'black',
     alignItems: 'center',
-    borderRadius: 15,
+    borderRadius: 50,
   },
 });
 export default EditAlarmScreen;
