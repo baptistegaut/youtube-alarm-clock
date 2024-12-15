@@ -3,6 +3,8 @@ import React, {useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import {NotificationButton} from '../component/Notification';
+import {Alarm} from './EditAlarm';
 
 function HomeScreen({navigation}) {
   const ALARM_KEY = 'alarms';
@@ -133,6 +135,7 @@ const styles = StyleSheet.create({
   time: {
     fontSize: 18,
     fontWeight: 'bold',
+    color: '#666',
   },
   channelId: {
     fontSize: 16,

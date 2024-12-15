@@ -1,15 +1,9 @@
-import React, { useState } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Pressable,
-} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, Text, View, TextInput, Pressable} from 'react-native';
 import WeekdaySelector from '../component/WeekdaySelector';
 import DatePicker from 'react-native-date-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import {setTriggerNotif} from '../utils/notification';
 
 export interface Alarm {
   time: string;
@@ -17,12 +11,11 @@ export interface Alarm {
 }
 
 function EditAlarmScreen({navigation, route}) {
-
-  const { alarmList } = route.params;
+  const {alarmList} = route.params;
   const [date, setDate] = useState(new Date());
   const [channelId, setChannelId] = useState('');
   const ALARM_KEY = 'alarms';
-  const [selectedWeekdays, setSelectedWeekdays] = useState<string[]>([]); 
+  const [selectedWeekdays, setSelectedWeekdays] = useState<string[]>([]);
 
   const saveAlarm = async () => {
     try {
@@ -32,7 +25,10 @@ function EditAlarmScreen({navigation, route}) {
         weekdays: selectedWeekdays,
       };
 
-      await AsyncStorage.setItem(ALARM_KEY, JSON.stringify([...alarmList, alarm]));
+      await AsyncStorage.setItem(
+        ALARM_KEY,
+        JSON.stringify([...alarmList, alarm]),
+      );
       return navigation.navigate('Home');
     } catch (e) {
       console.error(e);
@@ -41,25 +37,23 @@ function EditAlarmScreen({navigation, route}) {
 
   return (
     <View style={styles.container}>
-      <WeekdaySelector selectedWeekdays={selectedWeekdays} setSelectedWeekdays={setSelectedWeekdays} />
+      <WeekdaySelector
+        selectedWeekdays={selectedWeekdays}
+        setSelectedWeekdays={setSelectedWeekdays}
+      />
       <Text style={styles.text}>Time</Text>
-      <DatePicker  mode="time" date={date} onDateChange={setDate} />
+      <DatePicker mode="time" date={date} onDateChange={setDate} />
       <Text style={styles.text}>Youtube channel </Text>
       <TextInput
-        value={channelId} onChangeText={setChannelId}
+        value={channelId}
+        onChangeText={setChannelId}
         style={styles.text_input}
       />
-      <Pressable
-        style={[
-          styles.pressable_style,
-        ]}
-        onPress={saveAlarm}>
+      <Pressable style={[styles.pressable_style]} onPress={saveAlarm}>
         <Text style={styles.pressable_text}> Save Alarm </Text>
       </Pressable>
       <Pressable
-        style={[
-          styles.pressable_style,
-        ]}
+        style={[styles.pressable_style]}
         onPress={() => {
           return navigation.navigate('Home');
         }}>
