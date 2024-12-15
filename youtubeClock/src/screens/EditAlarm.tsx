@@ -4,7 +4,6 @@ import {
   Text,
   View,
   TextInput,
-  useWindowDimensions,
   Pressable,
 } from 'react-native';
 import WeekdaySelector from '../component/WeekdaySelector';
@@ -22,13 +21,17 @@ function EditAlarmScreen({navigation, route}) {
   const { alarmList } = route.params;
   const [date, setDate] = useState(new Date());
   const [channelId, setChannelId] = useState('');
-  const deviceWidth = useWindowDimensions().width;
   const ALARM_KEY = 'alarms';
   const [selectedWeekdays, setSelectedWeekdays] = useState<string[]>([]); 
 
   const saveAlarm = async () => {
     try {
-      const alarm = { time: date.getHours() + ':' + date.getMinutes(), channelId: channelId };
+      const alarm = {
+        time: date.getHours() + ':' + date.getMinutes(),
+        channelId: channelId,
+        weekdays: selectedWeekdays,
+      };
+
       await AsyncStorage.setItem(ALARM_KEY, JSON.stringify([...alarmList, alarm]));
       return navigation.navigate('Home');
     } catch (e) {
