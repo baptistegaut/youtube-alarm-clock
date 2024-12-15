@@ -2,6 +2,7 @@ import { Pressable, StyleSheet, View, FlatList, Text } from 'react-native';
 import React, { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 
 function HomeScreen({navigation}) {
@@ -15,10 +16,15 @@ function HomeScreen({navigation}) {
       if (storedAlarms !== null) {
         setAlarmList(JSON.parse(storedAlarms));
       }
-      console.log(storedAlarms);
     } catch (e) {
       console.error(e);
     }
+  };
+  
+  const deleteAlarm = async (index: number) => {
+    const updatedAlarms = alarmList.filter((_, i) => i !== index);
+    setAlarmList(updatedAlarms);
+    await AsyncStorage.setItem(ALARM_KEY, JSON.stringify(updatedAlarms));
   };
 
   useFocusEffect(
@@ -29,10 +35,18 @@ function HomeScreen({navigation}) {
     }, [])
   );
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item, index }) => (
     <View style={styles.item}>
+      <View>
       <Text style={styles.time}>{item.time}</Text>
       <Text style={styles.channelId}>{item.channelId}</Text>
+      </View>
+    <Pressable
+        onPress={() => deleteAlarm(index)}
+        style={styles.deleteButton}
+      >
+      <Icon name="delete" size={24} color="red" />
+    </Pressable>
     </View>
   );
 
@@ -41,7 +55,7 @@ function HomeScreen({navigation}) {
       <FlatList
         data={alarmList}
         renderItem={renderItem}
-        contenrContainerStyle={styles.list}
+        contentContainerStyle={styles.list}
       />
       <View style={styles.buttonView}>
       <Pressable
@@ -108,6 +122,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   time: {
     fontSize: 18,
@@ -117,5 +133,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#666',
   },
+
 });
 export default HomeScreen;
