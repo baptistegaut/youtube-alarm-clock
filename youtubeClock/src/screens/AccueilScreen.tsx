@@ -1,11 +1,9 @@
-import { Pressable, StyleSheet, View, FlatList, Text } from 'react-native';
-import React, { useState } from 'react';
+import {Pressable, StyleSheet, View, FlatList, Text} from 'react-native';
+import React, {useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useFocusEffect } from '@react-navigation/native';
-
+import {useFocusEffect} from '@react-navigation/native';
 
 function HomeScreen({navigation}) {
-
   const ALARM_KEY = 'alarms';
   const [alarmList, setAlarmList] = useState<Alarm[]>([]);
 
@@ -15,7 +13,6 @@ function HomeScreen({navigation}) {
       if (storedAlarms !== null) {
         setAlarmList(JSON.parse(storedAlarms));
       }
-      console.log(storedAlarms);
     } catch (e) {
       console.error(e);
     }
@@ -24,12 +21,11 @@ function HomeScreen({navigation}) {
   useFocusEffect(
     React.useCallback(() => {
       getStoredAlarms();
-      return () => {
-      };
-    }, [])
+      return () => {};
+    }, []),
   );
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({item}) => (
     <View style={styles.item}>
       <Text style={styles.time}>{item.time}</Text>
       <Text style={styles.channelId}>{item.channelId}</Text>
@@ -44,19 +40,21 @@ function HomeScreen({navigation}) {
         contenrContainerStyle={styles.list}
       />
       <View style={styles.buttonView}>
-      <Pressable
-        onPress={() => {
-          return navigation.navigate('Alarm form', {alarmList: alarmList});
-        }}
-        style={styles.pressable_style}
-      ><Text style={styles.pressable_text}>Add alarm</Text></Pressable>
-      <Pressable
-        onPress={async () => {
-        await AsyncStorage.removeItem(ALARM_KEY);
-        setAlarmList([]);
-        }}
-        style={styles.pressable_style}
-      ><Text style={styles.pressable_text}>Clear all</Text></Pressable>
+        <Pressable
+          onPress={() => {
+            return navigation.navigate('Alarm form', {alarmList: alarmList});
+          }}
+          style={styles.pressable_style}>
+          <Text style={styles.pressable_text}>Add alarm</Text>
+        </Pressable>
+        <Pressable
+          onPress={async () => {
+            await AsyncStorage.removeItem(ALARM_KEY);
+            setAlarmList([]);
+          }}
+          style={styles.pressable_style}>
+          <Text style={styles.pressable_text}>Clear all</Text>
+        </Pressable>
       </View>
     </View>
   );
@@ -78,14 +76,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     textAlign: 'center',
   },
-   container: {
+  container: {
     justifyContent: 'center',
     flex: 1,
     backgroundColor: '#f8f8f8',
     padding: 5,
     marginVertical: 50,
   },
-  
+
   buttonView: {
     alignItems: 'center',
     justifyContent: 'center',
