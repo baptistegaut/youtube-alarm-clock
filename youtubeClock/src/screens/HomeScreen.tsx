@@ -33,10 +33,17 @@ function HomeScreen({navigation}) {
     }, []),
   );
 
+  const formatTime = (time: string) => {
+    const [hours, minutes] = time?.split(':')?.map(Number);
+    const formattedHours = hours < 10 ? `0${hours}` : hours;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    return `${formattedHours}:${formattedMinutes}`;
+  };
+
   const renderItem = ({item, index}) => (
     <View style={styles.item}>
       <View style={styles.rowItems}>
-        <Text style={styles.time}>{item.time}</Text>
+        <Text style={styles.time}>{formatTime(item.time)}</Text>
         <Pressable
           onPress={() => deleteAlarm(index)}
           style={styles.deleteButton}>
@@ -58,6 +65,14 @@ function HomeScreen({navigation}) {
         contentContainerStyle={styles.list}
       />
       <View style={styles.buttonView}>
+
+        <Pressable
+          onPress={() => {
+            return navigation.navigate('Youtube player');
+          }}
+          style={styles.pressable_style}>
+          <Text style={styles.pressable_text}>Youtube Player</Text>
+        </Pressable>
         <Pressable
           onPress={() => {
             return navigation.navigate('Alarm form', {alarmList: alarmList});

@@ -8,8 +8,9 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import HomeScreen from './src/screens/AccueilScreen';
+import HomeScreen from './src/screens/HomeScreen';
 import EditAlarmScreen from './src/screens/EditAlarm';
+import YoutubeScreen from './src/screens/YoutubeScreen';
 import React from 'react';
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,11 @@ function App(): React.JSX.Element {
         <Stack.Screen
           name="Alarm form"
           component={EditAlarmScreen}
+          options={{headerShown: false}}
+        />
+        <Stack.Screen
+          name="Youtube player"
+          component={YoutubeScreen}
           options={{headerShown: false}}
         />
       </Stack.Navigator>
