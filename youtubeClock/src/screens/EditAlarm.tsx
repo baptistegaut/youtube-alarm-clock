@@ -91,7 +91,7 @@ function EditAlarmScreen({navigation, route}) {
         timestamp: alarmDate.getTime(), // Timestamp in milliseconds
       },
     );
-    console.log('Alarm set for:', alarmTime);
+    console.log('Alarm set for:', alarmDate);
   }
 
   return (
