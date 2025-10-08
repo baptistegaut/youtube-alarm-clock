@@ -3,8 +3,11 @@ import React, {useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import type {StaticScreenProps} from '@react-navigation/native';
+import {Alarm} from './EditAlarm';
+import notifee from '@notifee/react-native';
 
-function HomeScreen({navigation}) {
+function HomeScreen({navigation}: StaticScreenProps) {
   const ALARM_KEY = 'alarms';
   const [alarmList, setAlarmList] = useState<Alarm[]>([]);
 
@@ -42,18 +45,22 @@ function HomeScreen({navigation}) {
 
   const renderItem = ({item, index}) => (
     <View style={styles.item}>
-      <View style={styles.rowItems}>
-        <Text style={styles.time}>{formatTime(item.time)}</Text>
-        <Pressable
-          onPress={() => deleteAlarm(index)}
-          style={styles.deleteButton}>
-          <Icon name="delete" size={24} color="#990000" />
-        </Pressable>
-      </View>
-      <View style={styles.rowItems}>
-        <Text style={styles.channelId}>{item.channelId}</Text>
-        <Text style={styles.channelId}>{item.weekdays?.join(', ')}</Text>
-      </View>
+      <Pressable
+        onPress={() => {
+          return navigation.navigate('Alarm form', {alarmList, index});
+        }}
+        >
+        <View style={styles.rowItems}>
+          <Text style={styles.time}>{formatTime(item.time)}</Text>
+          <Pressable onPress={() => deleteAlarm(index)}>
+            <Icon name="delete" size={24} color="#990000" />
+          </Pressable>
+        </View>
+        <View style={styles.rowItems}>
+          <Text style={styles.channelId}>{item.channelId}</Text>
+          <Text style={styles.channelId}>{item.weekdays?.join(', ')}</Text>
+        </View>
+      </Pressable>
     </View>
   );
 
@@ -65,14 +72,6 @@ function HomeScreen({navigation}) {
         contentContainerStyle={styles.list}
       />
       <View style={styles.buttonView}>
-
-        <Pressable
-          onPress={() => {
-            return navigation.navigate('Youtube player');
-          }}
-          style={styles.pressable_style}>
-          <Text style={styles.pressable_text}>Youtube Player</Text>
-        </Pressable>
         <Pressable
           onPress={() => {
             return navigation.navigate('Alarm form', {alarmList: alarmList});

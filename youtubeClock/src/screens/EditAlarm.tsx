@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -18,11 +18,26 @@ export interface Alarm {
 
 function EditAlarmScreen({navigation, route}) {
 
-  const { alarmList } = route.params;
+  const { alarmList, index } = route.params;
   const [date, setDate] = useState(new Date());
   const [channelId, setChannelId] = useState('');
   const ALARM_KEY = 'alarms';
-  const [selectedWeekdays, setSelectedWeekdays] = useState<string[]>([]); 
+  const [selectedWeekdays, setSelectedWeekdays] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (index !== undefined && alarmList && alarmList[index]) {
+      const alarm = alarmList[index];
+      setChannelId(alarm.channelId);
+      const [hours, minutes] = alarm.time.split(':').map(Number);
+      const alarmDate = new Date();
+      alarmDate.setHours(hours);
+      alarmDate.setMinutes(minutes);
+      setDate(alarmDate);
+      if (alarm.weekdays) {
+        setSelectedWeekdays(alarm.weekdays);
+      }
+    }
+  }, [index, alarmList]);
 
   const saveAlarm = async () => {
     try {
@@ -31,7 +46,11 @@ function EditAlarmScreen({navigation, route}) {
         channelId: channelId,
         weekdays: selectedWeekdays,
       };
-
+      if (index !== undefined && alarmList && alarmList[index]) {
+        const updatedAlarms = alarmList.map((a: Alarm, i: number) => (i === index ? alarm : a));
+        await AsyncStorage.setItem(ALARM_KEY, JSON.stringify(updatedAlarms));
+        return navigation.navigate('Home');
+      }
       await AsyncStorage.setItem(ALARM_KEY, JSON.stringify([...alarmList, alarm]));
       return navigation.navigate('Home');
     } catch (e) {
@@ -44,7 +63,7 @@ function EditAlarmScreen({navigation, route}) {
       <WeekdaySelector selectedWeekdays={selectedWeekdays} setSelectedWeekdays={setSelectedWeekdays} />
       <Text style={styles.text}>Time</Text>
       <DatePicker  mode="time" date={date} onDateChange={setDate} />
-      <Text style={styles.text}>Youtube channel </Text>
+      <Text style={styles.text}>Youtube link</Text>
       <TextInput
         value={channelId} onChangeText={setChannelId}
         style={styles.text_input}
