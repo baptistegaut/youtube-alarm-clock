@@ -5,7 +5,6 @@ import {useFocusEffect} from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import type {StaticScreenProps} from '@react-navigation/native';
 import {Alarm} from './EditAlarm';
-import notifee from '@notifee/react-native';
 
 function HomeScreen({navigation}: StaticScreenProps) {
   const ALARM_KEY = 'alarms';
@@ -43,7 +42,7 @@ function HomeScreen({navigation}: StaticScreenProps) {
     return `${formattedHours}:${formattedMinutes}`;
   };
 
-  const renderItem = ({item, index}) => (
+  const renderItem = ({item, index}: {item: Alarm; index: number}) => (
     <View style={styles.item}>
       <Pressable
         onPress={() => {
@@ -57,7 +56,7 @@ function HomeScreen({navigation}: StaticScreenProps) {
           </Pressable>
         </View>
         <View style={styles.rowItems}>
-          <Text style={styles.channelId}>{item.channelId}</Text>
+          <Text style={styles.channelId}>{item.youtubeLink}</Text>
           <Text style={styles.channelId}>{item.weekdays?.join(', ')}</Text>
         </View>
       </Pressable>
@@ -151,6 +150,7 @@ const styles = StyleSheet.create({
   channelId: {
     fontSize: 16,
     color: '#666',
+    maxWidth: '49%',
   },
 });
 export default HomeScreen;
